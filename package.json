@@ -8,7 +8,7 @@
 		"build": "rimraf dist && tsc",
 		"dev": "npx ts-node test/index.ts",
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"postinstall": "npm install"
+		"prepare": "npm install"
 	},
 	"author": "ITM",
 	"license": "ISC",
