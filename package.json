@@ -7,13 +7,13 @@
 	"scripts": {
 		"build": "rimraf dist && tsc",
 		"dev": "npx ts-node test/index.ts",
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"postinstall": "npm install"
 	},
 	"author": "ITM",
 	"license": "ISC",
 	"dependencies": {
-		"dayjs": "^1.11.13",
-		"fs": "^0.0.1-security"
+		"dayjs": "^1.11.13"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.5",
