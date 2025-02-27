@@ -12,8 +12,7 @@
 	"author": "ITM",
 	"license": "ISC",
 	"dependencies": {
-		"dayjs": "^1.11.13",
-		"fs": "^0.0.1-security"
+		"dayjs": "^1.11.13"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.5",
