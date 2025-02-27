@@ -18,7 +18,6 @@ __exportStar(require("./cloudinary"), exports);
 __exportStar(require("./common"), exports);
 __exportStar(require("./data"), exports);
 __exportStar(require("./date-time"), exports);
-__exportStar(require("./file"), exports);
 __exportStar(require("./image"), exports);
 __exportStar(require("./model"), exports);
 __exportStar(require("./string"), exports);
