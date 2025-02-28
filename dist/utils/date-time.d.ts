@@ -4,6 +4,8 @@ declare function getTimeAgo({ date }: {
 }): string;
 export declare const dateTimeUtils: {
     getTimeAgo: typeof getTimeAgo;
-    formatToVNDateTime: (dateStr: string) => string;
+    toVNDateTime: ({ dateString }: {
+        dateString: string;
+    }) => string;
 };
 export {};

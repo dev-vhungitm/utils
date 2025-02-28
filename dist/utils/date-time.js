@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.dateTimeUtils = void 0;
 const dayjs_1 = __importDefault(require("dayjs"));
-require("dayjs/locale/vi");
 const relativeTime_1 = __importDefault(require("dayjs/plugin/relativeTime"));
 const constants_1 = require("../constants");
 const string_1 = require("./string");
+require("dayjs/locale/vi");
 dayjs_1.default.extend(relativeTime_1.default);
 dayjs_1.default.locale('vi');
 function getTimeAgo({ date }) {
@@ -23,11 +23,11 @@ function getTimeAgo({ date }) {
         return '';
     }
 }
-const formatToVNDateTime = (dateStr) => {
-    const result = (0, dayjs_1.default)(dateStr).format(constants_1.configs.dateFormats.vnDate);
+const toVNDateTime = ({ dateString }) => {
+    const result = (0, dayjs_1.default)(dateString).format(constants_1.configs.dateFormats.vnDate);
     return result;
 };
 exports.dateTimeUtils = {
     getTimeAgo,
-    formatToVNDateTime
+    toVNDateTime
 };
