@@ -14,7 +14,7 @@ function getTimeAgo(startDate: string) {
 		result = stringUtils.capitalizeFirstLetter(result);
 
 		return result;
-	} catch (_) {
+	} catch {
 		return '';
 	}
 }
