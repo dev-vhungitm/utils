@@ -1,17 +1,18 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import relativeTime from 'dayjs/plugin/relativeTime';
+import { configs } from '../constants';
 import { stringUtils } from './string';
 
 dayjs.extend(relativeTime);
 dayjs.locale('vi');
 
-function getTimeAgo(startDate: string) {
+function getTimeAgo({ date }: { date: string }) {
 	try {
 		const now = dayjs();
-		const start = dayjs(startDate);
+		const start = dayjs(date);
 		let result = start.from(now);
-		result = stringUtils.capitalizeFirstLetter(result);
+		result = stringUtils.capitalizeFirstLetter({ string: result });
 
 		return result;
 	} catch {
@@ -20,7 +21,7 @@ function getTimeAgo(startDate: string) {
 }
 
 const formatToVNDateTime = (dateStr: string) => {
-	const result = dayjs(dateStr).format('DD/MM/YYYY');
+	const result = dayjs(dateStr).format(configs.dateFormats.vnDate);
 	return result;
 };
 

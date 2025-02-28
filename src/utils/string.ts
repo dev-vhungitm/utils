@@ -1,32 +1,30 @@
-import { enums } from 'itm-constants';
+import { enums } from '../constants';
 import { imageUtils } from './image';
 
-const capitalizeFirstLetter = (str: string = '') => {
-	return str.charAt(0).toUpperCase() + str.slice(1);
+const capitalizeFirstLetter = ({ string = '' }: { string: string }) => {
+	return string.charAt(0).toUpperCase() + string.slice(1);
 };
 
-const getValidClassNames = (classNames: (string | any)[]) => {
+const getValidClassNames = ({ classNames }: { classNames: (string | any)[] }) => {
 	return classNames.filter(className => className).join(' ');
 };
 
-const removeVNTones = (str: string) => {
-	return str
+const removeVNTones = ({ string = '' }: { string: string }) => {
+	return string
 		.normalize('NFD')
 		.replace(/[\u0300-\u036f]/g, '')
 		.replace(/đ/g, 'd')
 		.replace(/Đ/g, 'D');
 };
 
-const removeTags = (str: string = '') => {
-	if (str === null || str === '') return false;
-	else str = str.toString();
-	return str.replace(/(<([^>]+)>)/gi, '');
+const removeTags = ({ string = '' }: { string: string }) => {
+	return string.toString().replace(/(<([^>]+)>)/gi, '');
 };
 
-const generateSlug = (str: string = '', prefix: string = '') => {
+const generateSlug = ({ string = '', prefix }: { string: string; prefix?: string | null }) => {
 	const result =
 		(prefix ?? '/') +
-		removeVNTones(str)
+		removeVNTones({ string })
 			.toLowerCase()
 			.trim()
 			.replace(/[^a-z0-9\s-]/g, '')
@@ -36,12 +34,12 @@ const generateSlug = (str: string = '', prefix: string = '') => {
 	return result;
 };
 
-const base64ToFile = (base64String: string, fileName: string = 'file'): File | null => {
-	const mimeTypeMatch = base64String.match(/data:(.*?);base64,/);
+const base64ToFile = ({ base64, fileName = 'file' }: { base64: string; fileName?: string }): File | null => {
+	const mimeTypeMatch = base64.match(/data:(.*?);base64,/);
 	if (!mimeTypeMatch) return null;
 
 	const mimeType = mimeTypeMatch[1];
-	const base64Data = base64String.split(',')[1];
+	const base64Data = base64.split(',')[1];
 	const byteCharacters = atob(base64Data);
 	const byteNumbers = new Array(byteCharacters.length);
 
@@ -62,45 +60,45 @@ const base64ToFile = (base64String: string, fileName: string = 'file'): File | n
 	return file;
 };
 
-const getListBase64 = (input: string): string[] => {
+const getListBase64 = ({ string = '' }: { string: string }): string[] => {
 	const base64Regex = /data:(.*?);base64,([A-Za-z0-9+/=]+)/g;
 	const matches: string[] = [];
 	let match;
 
-	while ((match = base64Regex.exec(input)) !== null) {
+	while ((match = base64Regex.exec(string)) !== null) {
 		matches.push(match[0]);
 	}
 
 	return matches;
 };
 
-const listBase64ToListFile = (listBase64: string[]) => {
+const listBase64ToListFile = ({ listBase64 = [] }: { listBase64: string[] }) => {
 	const result: File[] = [];
 
 	for (const base64 of listBase64) {
-		const file = base64ToFile(base64);
+		const file = base64ToFile({ base64 });
 		if (file) result.push(file);
 	}
 
 	return result;
 };
 
-const replaceBase64ByWebPBase64 = async (content: string = '') => {
-	content ||= '';
-	let listBase64 = getListBase64(content);
+const replaceBase64ByWebPBase64 = async ({ string = '' }: { string: string }) => {
+	string ||= '';
+	let listBase64 = getListBase64({ string });
 	listBase64 = [...new Set(listBase64)];
 
 	const promises = listBase64.map(async base64 => {
-		const image = base64ToFile(base64);
-		const webPBase64 = await imageUtils.toWebPBase64(image as File);
-		content = content.replaceAll(base64, webPBase64 as string);
+		const image = base64ToFile({ base64 });
+		const webPBase64 = await imageUtils.toWebPBase64({ image: image as File });
+		string = string.replaceAll(base64, webPBase64 as string);
 	});
 
 	await Promise.all(promises);
-	return content;
+	return string;
 };
 
-const downloadBase64File = (base64: string, fileName: string = 'image') => {
+const downloadBase64File = ({ base64 = '', fileName = 'file' }: { base64: string; fileName?: string }) => {
 	const match = base64.match(/^data:(.+);base64,/);
 	if (!match) return;
 

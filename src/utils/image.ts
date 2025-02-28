@@ -1,9 +1,9 @@
-import { configs } from 'itm-constants';
+import { configs, enums } from '../constants';
 
-const toBase64 = async (file: File) => {
+const toBase64 = async ({ image }: { image: File }) => {
 	try {
 		const result = new Promise<string | null>((resolve, reject) => {
-			if (!file || !configs.imageValidTypesPattern.test(file.type)) {
+			if (!image || !configs.imageValidTypesPattern.test(image.type)) {
 				resolve(null);
 				return;
 			}
@@ -11,9 +11,7 @@ const toBase64 = async (file: File) => {
 			const reader = new FileReader();
 			reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
 			reader.onerror = () => reject(null);
-
-			// Chuyển đổi file sang Base64
-			reader.readAsDataURL(file);
+			reader.readAsDataURL(image);
 		});
 
 		return await result;
@@ -22,20 +20,28 @@ const toBase64 = async (file: File) => {
 	}
 };
 
-const generateURL = (imageURL = '') => {
+const generateURL = ({ url = '', root = '' }: { url: string; root?: string }) => {
 	try {
-		const result = `${imageURL}?t=${new Date().getTime()}`;
+		const result = `${!url.startsWith('http') ? `${root}/` : ''}${url}?t=${new Date().getTime()}`;
 		return result;
 	} catch {
-		return imageURL;
+		return url;
 	}
 };
 
-const convertType = async (file: File, format: string = 'webp'): Promise<File | null> => {
+const convertType = async ({
+	image,
+	type = enums.imageTypes.webP.type,
+	extension = enums.imageTypes.webP.extension
+}: {
+	image: File;
+	type?: string;
+	extension?: string;
+}): Promise<File | null> => {
 	try {
-		if (!file) return null;
+		if (!image) return null;
 
-		const originalFileName = file.name.replace(/\.[^/.]+$/, '');
+		const originalFileName = image.name.replace(/\.[^/.]+$/, '');
 		const img = new Image();
 		const reader = new FileReader();
 
@@ -53,32 +59,32 @@ const convertType = async (file: File, format: string = 'webp'): Promise<File | 
 
 				canvas.toBlob(blob => {
 					if (blob) {
-						const resultFile = new File([blob], `${originalFileName}.${format}`, { type: `image/${format}` });
+						const resultFile = new File([blob], `${originalFileName}.${extension}`, { type });
 						resolve(resultFile);
 					} else reject(null);
-				}, `image/${format}`);
+				}, type);
 			};
 
 			img.onerror = () => reject(null);
 			reader.onerror = () => reject(null);
-			reader.readAsDataURL(file);
+			reader.readAsDataURL(image);
 		});
 	} catch {
 		return null;
 	}
 };
 
-const toWebP = async (file: File): Promise<File | null> => {
-	const result = await convertType(file, 'webp');
+const toWebP = async ({ image }: { image: File }): Promise<File | null> => {
+	const result = await convertType({ image });
 	return result;
 };
 
-const toWebPBase64 = async (image: File) => {
+const toWebPBase64 = async ({ image }: { image: File }) => {
 	try {
 		if (!image) return null;
 
-		const webP = await toWebP(image);
-		const result = await toBase64(webP as File);
+		const webP = await toWebP({ image });
+		const result = await toBase64({ image: webP as File });
 
 		return result;
 	} catch {
@@ -86,10 +92,10 @@ const toWebPBase64 = async (image: File) => {
 	}
 };
 
-export const getDimensions = (file: File): Promise<{ width: number; height: number }> => {
+export const getDimensions = ({ image }: { image: File }): Promise<{ width: number; height: number }> => {
 	return new Promise((resolve, reject) => {
 		const img = new Image();
-		const url = URL.createObjectURL(file);
+		const url = URL.createObjectURL(image);
 
 		img.onload = () => {
 			resolve({
@@ -104,7 +110,7 @@ export const getDimensions = (file: File): Promise<{ width: number; height: numb
 	});
 };
 
-const isValidURL = (url: string): Promise<boolean> => {
+const isValidURL = ({ url = '' }: { url: string }): Promise<boolean> => {
 	return new Promise(resolve => {
 		const img = new Image();
 		img.src = url;

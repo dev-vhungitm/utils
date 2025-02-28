@@ -1,25 +1,25 @@
 import dayjs from 'dayjs';
-import { configs } from 'itm-constants';
+import { configs } from '../constants';
 
 export type TSortParam = string | number | Date | boolean | undefined | null;
 
-const sortString = (a: string, b: string) => {
+const sortString = ({ a, b }: { a: string; b: string }) => {
 	return a.toLowerCase().localeCompare(b.toLowerCase());
 };
 
-const sortNumber = (a: number, b: number) => {
+const sortNumber = ({ a, b }: { a: number; b: number }) => {
 	return a - b;
 };
 
-const sortDateString = (a: string, b: string) => {
+const sortDateString = ({ a, b }: { a: string; b: string }) => {
 	const dateA = dayjs(a, configs.dateFormats.vnDate);
 	const dateB = dayjs(b, configs.dateFormats.vnDate);
 
 	return dateA.isAfter(dateB) ? 1 : dateA.isBefore(dateB) ? -1 : 0;
 };
 
-const sortBoolean = (a: boolean, b: boolean) => {
-	return sortString(a.toString(), b.toString());
+const sortBoolean = ({ a, b }: { a: boolean; b: boolean }) => {
+	return sortString({ a: a.toString(), b: b.toString() });
 };
 
 const sort = (
@@ -33,15 +33,15 @@ const sort = (
 
 	switch (type) {
 		case 'string':
-			return sortString(a as string, b as string);
+			return sortString({ a: a as string, b: b as string });
 		case 'number':
-			return sortNumber(a as number, b as number);
+			return sortNumber({ a: a as number, b: b as number });
 		case 'dateString':
-			return sortDateString(a as string, b as string);
+			return sortDateString({ a: a as string, b: b as string });
 		case 'boolean':
-			return sortBoolean(a as boolean, b as boolean);
+			return sortBoolean({ a: a as boolean, b: b as boolean });
 		default:
-			return sortString(a as string, b as string);
+			return sortString({ a: a as string, b: b as string });
 	}
 };
 
