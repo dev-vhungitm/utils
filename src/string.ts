@@ -1,3 +1,4 @@
+import { enums } from 'itm-constants';
 import { imageUtils } from './image';
 
 const capitalizeFirstLetter = (str: string = '') => {
@@ -51,24 +52,12 @@ const base64ToFile = (base64String: string, fileName: string = 'file'): File | n
 	const byteArray = new Uint8Array(byteNumbers);
 	let extension = '';
 
-	if (mimeType) {
-		switch (mimeType) {
-			case 'image/jpeg':
-				extension = '.jpg';
-				break;
-			case 'image/png':
-				extension = '.png';
-				break;
-			case 'image/gif':
-				extension = '.gif';
-				break;
-			default:
-				extension = '';
-				break;
-		}
-	}
+	Object.keys(enums.imageTypes).find(key => {
+		const value = (enums.imageTypes as any)[key];
+		if (value.type === mimeType) extension = value.extension;
+	});
 
-	const file = new File([byteArray], `${fileName}${extension}`, { type: mimeType });
+	const file = new File([byteArray], `${fileName}.${extension}`, { type: mimeType });
 
 	return file;
 };
@@ -113,10 +102,7 @@ const replaceBase64ByWebPBase64 = async (content: string = '') => {
 
 const downloadBase64File = (base64: string, fileName: string = 'image') => {
 	const match = base64.match(/^data:(.+);base64,/);
-	if (!match) {
-		console.log('Base64 không hợp lệ.');
-		return;
-	}
+	if (!match) return;
 
 	const mimeType = match[1];
 	const extension = mimeType.split('/')[1];

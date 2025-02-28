@@ -1,5 +1,5 @@
 {
-	"name": "utils",
+	"name": "itm-utils",
 	"version": "1.0.0",
 	"description": "",
 	"main": "dist/index.js",
@@ -12,7 +12,8 @@
 	"author": "ITM",
 	"license": "ISC",
 	"dependencies": {
-		"dayjs": "^1.11.13"
+		"dayjs": "^1.11.13",
+		"itm-constants": "git+https://github.com/dev-vhungitm/constants.git"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.5",

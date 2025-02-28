@@ -1,20 +1,18 @@
+import { configs } from 'itm-constants';
+
 const toBase64 = async (file: File) => {
 	try {
-		const result = new Promise((resolve, reject) => {
-			if (!file || !file.type.match('image/webp,image/jpeg,image/png,image/svg+xml,image/gif,image/bmp,image/tiff')) {
+		const result = new Promise<string | null>((resolve, reject) => {
+			if (!file || !configs.imageValidTypesPattern.test(file.type)) {
 				resolve(null);
 				return;
 			}
 
 			const reader = new FileReader();
-			reader.onload = function () {
-				if (typeof reader.result === 'string') {
-					const base64 = reader.result;
-					resolve(base64);
-				} else resolve(null);
-			};
-
+			reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : null);
 			reader.onerror = () => reject(null);
+
+			// Chuyển đổi file sang Base64
 			reader.readAsDataURL(file);
 		});
 

@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import { configs } from 'itm-constants';
 
 export type TSortParam = string | number | Date | boolean | undefined | null;
 
@@ -11,8 +12,8 @@ const sortNumber = (a: number, b: number) => {
 };
 
 const sortDateString = (a: string, b: string) => {
-	const dateA = dayjs(a, 'DD/MM/YYYY');
-	const dateB = dayjs(b, 'DD/MM/YYYY');
+	const dateA = dayjs(a, configs.dateFormats.vnDate);
+	const dateB = dayjs(b, configs.dateFormats.vnDate);
 
 	return dateA.isAfter(dateB) ? 1 : dateA.isBefore(dateB) ? -1 : 0;
 };
