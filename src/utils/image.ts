@@ -31,8 +31,8 @@ const generateURL = ({ url = '', root = '' }: { url: string; root?: string }) =>
 
 const convertType = async ({
 	image,
-	type = enums.imageTypes.webP.type,
-	extension = enums.imageTypes.webP.extension
+	type = enums.imageTypes.webp.type,
+	extension = enums.imageTypes.webp.extension
 }: {
 	image: File;
 	type?: string;

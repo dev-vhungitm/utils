@@ -29,7 +29,7 @@ const generateURL = ({ url = '', root = '' }) => {
         return url;
     }
 };
-const convertType = async ({ image, type = constants_1.enums.imageTypes.webP.type, extension = constants_1.enums.imageTypes.webP.extension }) => {
+const convertType = async ({ image, type = constants_1.enums.imageTypes.webp.type, extension = constants_1.enums.imageTypes.webp.extension }) => {
     try {
         if (!image)
             return null;
