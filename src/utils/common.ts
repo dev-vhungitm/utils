@@ -22,11 +22,15 @@ const sortBoolean = ({ a, b }: { a: boolean; b: boolean }) => {
 	return sortString({ a: a.toString(), b: b.toString() });
 };
 
-const sort = (
-	a: TSortParam = null,
-	b: TSortParam = null,
-	type: 'string' | 'number' | 'dateString' | 'boolean' = 'string'
-) => {
+const sort = ({
+	a = null,
+	b = null,
+	type = 'string'
+}: {
+	a: TSortParam;
+	b: TSortParam;
+	type: 'string' | 'number' | 'dateString' | 'boolean';
+}) => {
 	if (a === null && b === null) return 0;
 	if (a === null) return 1;
 	if (b === null) return -1;
