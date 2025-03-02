@@ -29,7 +29,7 @@ const sort = ({
 }: {
 	a: TSortParam;
 	b: TSortParam;
-	type: 'string' | 'number' | 'dateString' | 'boolean';
+	type?: 'string' | 'number' | 'dateString' | 'boolean';
 }) => {
 	if (a === null && b === null) return 0;
 	if (a === null) return 1;
