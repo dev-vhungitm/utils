@@ -20,7 +20,7 @@ const sortDateString = ({ a, b }) => {
 const sortBoolean = ({ a, b }) => {
     return sortString({ a: a.toString(), b: b.toString() });
 };
-const sort = (a = null, b = null, type = 'string') => {
+const sort = ({ a = null, b = null, type = 'string' }) => {
     if (a === null && b === null)
         return 0;
     if (a === null)
