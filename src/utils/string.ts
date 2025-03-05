@@ -113,6 +113,53 @@ const downloadBase64File = ({ base64 = '', fileName = 'file' }: { base64: string
 	document.body.removeChild(link);
 };
 
+const replaceImageUrlInContent = ({
+	contentImages = [],
+	content = ''
+}: {
+	contentImages: string[];
+	content: string;
+}) => {
+	if (contentImages.length > 0) {
+		contentImages.forEach((contentImage, contentImageId) => {
+			content = content.replace(`{{{img${contentImageId}}}}`, contentImage);
+		});
+	}
+
+	return content;
+};
+
+const addBaseUrlForImageSrc = ({ content = '', baseUrl = '' }) => {
+	// Regular expression to find <img> tags and capture their src attribute.
+	const regex = /<img\s+[^>]*src=(["'])(.*?)\1[^>]*>/g;
+
+	// Replace each <img> tag in the content.
+	return content.replace(regex, (match, quote, src) => {
+		// Check if the src is an external link (starts with http or https).
+		const isExternalLink = /^(http|https):\/\//.test(src);
+
+		// If src is not an external link, prepend the baseUrl.
+		if (!isExternalLink) {
+			return match.replace(src, `${baseUrl}${src}`);
+		}
+
+		// If it's an external link, return the original match without changes.
+		return match;
+	});
+};
+
+const removeBaseUrlForImageSrc = ({ content = '', baseUrl = '' }) => {
+	const regex = new RegExp(
+		`(<img\\s+[^>]*src=["'])(${baseUrl.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\/[^"']+)(["'][^>]*>)`,
+		'g'
+	);
+
+	return content.replace(regex, (_, p1, p2, p3) => {
+		const relativePath = p2.replace(`${baseUrl}`, '');
+		return `${p1}${relativePath}${p3}`;
+	});
+};
+
 export const stringUtils = {
 	removeTags,
 	capitalizeFirstLetter,
@@ -122,5 +169,8 @@ export const stringUtils = {
 	downloadBase64File,
 	listBase64ToListFile,
 	replaceBase64ByWebPBase64,
-	getValidClassNames
+	getValidClassNames,
+	replaceImageUrlInContent,
+	addBaseUrlForImageSrc,
+	removeBaseUrlForImageSrc
 };

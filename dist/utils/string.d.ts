@@ -29,4 +29,16 @@ export declare const stringUtils: {
     getValidClassNames: ({ classNames }: {
         classNames: (string | any)[];
     }) => string;
+    replaceImageUrlInContent: ({ contentImages, content }: {
+        contentImages: string[];
+        content: string;
+    }) => string;
+    addBaseUrlForImageSrc: ({ content, baseUrl }: {
+        content?: string | undefined;
+        baseUrl?: string | undefined;
+    }) => string;
+    removeBaseUrlForImageSrc: ({ content, baseUrl }: {
+        content?: string | undefined;
+        baseUrl?: string | undefined;
+    }) => string;
 };
