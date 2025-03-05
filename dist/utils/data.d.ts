@@ -4,4 +4,7 @@ export declare const dataUtils: {
         page: number;
         itemsPerPage: number;
     }) => any[];
+    formDataToObject: ({ formData }: {
+        formData: Object;
+    }) => {};
 };

@@ -14,6 +14,23 @@ const getDataByPage = ({
 	return result;
 };
 
+const formDataToObject = ({ formData }: { formData: Object }) => {
+	const result = {};
+
+	Object.keys(formData).map(key => {
+		let value = (formData as any)[key];
+
+		if (value === 'true') value = true;
+		if (value === 'false') value = false;
+		if (value === 'null') value = null;
+
+		(result as any)[key] = value;
+	});
+
+	return result;
+};
+
 export const dataUtils = {
-	getDataByPage
+	getDataByPage,
+	formDataToObject
 };
