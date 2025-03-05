@@ -75,8 +75,14 @@ const convertType = async ({
 };
 
 const toWebP = async ({ image }: { image: File }): Promise<File | null> => {
-	const result = await convertType({ image });
-	return result;
+	const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null;
+
+	if (isNode) {
+		const sharp = require('sharp');
+		return await sharp(image).webp().toBuffer();
+	} else {
+		return await convertType({ image });
+	}
 };
 
 const toWebPBase64 = async ({ image }: { image: File }) => {

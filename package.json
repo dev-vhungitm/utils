@@ -13,7 +13,8 @@
 	"license": "ISC",
 	"dependencies": {
 		"dayjs": "^1.11.13",
-		"itm-constants": "git+https://github.com/dev-vhungitm/constants.git"
+		"itm-constants": "git+https://github.com/dev-vhungitm/constants.git",
+		"sharp": "^0.33.5"
 	},
 	"devDependencies": {
 		"@types/node": "^22.13.5",

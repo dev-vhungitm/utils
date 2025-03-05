@@ -65,8 +65,14 @@ const convertType = async ({ image, type = constants_1.enums.imageTypes.webp.typ
     }
 };
 const toWebP = async ({ image }) => {
-    const result = await convertType({ image });
-    return result;
+    const isNode = typeof process !== 'undefined' && process.versions !== null && process.versions.node !== null;
+    if (isNode) {
+        const sharp = require('sharp');
+        return await sharp(image).webp().toBuffer();
+    }
+    else {
+        return await convertType({ image });
+    }
 };
 const toWebPBase64 = async ({ image }) => {
     try {
